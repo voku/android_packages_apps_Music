@@ -29,6 +29,7 @@ import android.view.KeyEvent;
  */
 public class MediaButtonIntentReceiver extends BroadcastReceiver {
 
+    static final String TAG = "MediaButtonIntentReceiver";
     private static final int MSG_LONGPRESS_TIMEOUT = 1;
     private static final int LONG_PRESS_DELAY = 1000;
 
@@ -42,6 +43,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
             switch (msg.what) {
                 case MSG_LONGPRESS_TIMEOUT:
                     if (!mLaunched) {
+                        Log.d(TAG, "Launching MusicBrowserActivity");
                         Context context = (Context)msg.obj;
                         Intent i = new Intent();
                         i.putExtra("autoshuffle", "true");
@@ -98,6 +100,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
 
             if (command != null) {
                 if (action == KeyEvent.ACTION_DOWN) {
+                    Log.d(TAG, "Down: " + command);
                     if (mDown) {
                         if (MediaPlaybackService.CMDTOGGLEPAUSE.equals(command)
                                 && mLastClickTime != 0 
@@ -127,6 +130,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
                         mDown = true;
                     }
                 } else {
+                    Log.d(TAG, "Up: " + command);
                     mHandler.removeMessages(MSG_LONGPRESS_TIMEOUT);
                     mDown = false;
                 }
