@@ -128,6 +128,7 @@ public class MediaPlaybackService extends Service {
     private static final String LOGTAG = "MediaPlaybackService";
     private final Shuffler mRand = new Shuffler();
     private int mOpenFailedCounter = 0;
+    private static int mPrepareFailedCounter = 0;
     private static boolean mPlayPrev = false;
     String[] mCursorCols = new String[] {
             "audio._id AS _id",             // index must match IDCOLIDX below
@@ -1246,8 +1247,10 @@ public class MediaPlaybackService extends Service {
         if (mPlayer.isInitialized()) {
             // if we are at the end of the song, go to the next song first
             long duration = mPlayer.duration();
-            if (mRepeatMode != REPEAT_CURRENT && duration > 2000 &&
-                    mPlayer.position() >= duration - 2000) {
+            // To resume playback, check whether the remaining duration is more than 500msec or not.
+            // If the remaining playback duration is less than 500msec skip to next song.
+            if (mRepeatMode != REPEAT_CURRENT && duration > 500 &&
+                mPlayer.position() >= duration - 500) {
                 next(true);
             }
 
@@ -1394,6 +1397,10 @@ public class MediaPlaybackService extends Service {
                 mPlayPos = pos.intValue();
             } else {
                 if (mPlayPos > 0) {
+                    while(mPrepareFailedCounter > 0){
+                          mPlayPos--;
+                          mPrepareFailedCounter--;
+                    }
                     mPlayPos--;
                 } else {
                     mPlayPos = mPlayListLen - 1;
@@ -1897,6 +1904,7 @@ public class MediaPlaybackService extends Service {
                 mMediaPlayer.prepareAsync();
             } catch (IOException ex) {
                 // TODO: notify the user why the file couldn't be opened
+                mPrepareFailedCounter++;
                 mIsInitialized = false;
                 return;
             } catch (IllegalArgumentException ex) {
