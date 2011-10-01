@@ -155,7 +155,7 @@ public class MediaPlaybackService extends Service {
     private boolean mQuietMode = false;
     private AudioManager mAudioManager;
     // used to track what type of audio focus loss caused the playback to pause
-    private boolean mPausedByTransientLossOfFocus = false;
+    public static boolean mPausedByTransientLossOfFocus = false;
     private float mTransientDuckVolume = 1.0f;
 
     private SharedPreferences mPreferences;
@@ -1292,6 +1292,7 @@ public class MediaPlaybackService extends Service {
             }
 
         } else if (mPlayListLen <= 0) {
+            startProgressUpdate();
             // This is mostly so that if you press 'play' on a bluetooth headset
             // without every having played anything before, it will still play
             // something.
