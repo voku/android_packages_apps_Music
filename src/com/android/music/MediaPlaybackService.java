@@ -1292,7 +1292,6 @@ public class MediaPlaybackService extends Service {
             }
 
         } else if (mPlayListLen <= 0) {
-            startProgressUpdate();
             // This is mostly so that if you press 'play' on a bluetooth headset
             // without every having played anything before, it will still play
             // something.
