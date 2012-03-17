@@ -519,9 +519,7 @@ public class ArtistAlbumBrowserActivity extends ExpandableListActivity
     private Cursor getArtistCursor(AsyncQueryHandler async, String filter) {
 
         StringBuilder where = new StringBuilder();
-        //Custom: Only display Artists with 5 Tracks or more
-        where.append(MediaStore.Audio.Artists.ARTIST + " != '' AND " 
-            + MediaStore.Audio.Artists.NUMBER_OF_TRACKS + " >= 3");
+        where.append(MediaStore.Audio.Artists.ARTIST + " != ''")
         
         // Add in the filtering constraints
         String [] keywords = null;
