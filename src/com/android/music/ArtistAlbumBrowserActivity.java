@@ -519,7 +519,7 @@ public class ArtistAlbumBrowserActivity extends ExpandableListActivity
     private Cursor getArtistCursor(AsyncQueryHandler async, String filter) {
 
         StringBuilder where = new StringBuilder();
-        where.append(MediaStore.Audio.Artists.ARTIST + " != ''")
+        where.append(MediaStore.Audio.Artists.ARTIST + " != ''");
         
         // Add in the filtering constraints
         String [] keywords = null;
